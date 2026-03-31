@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Depression — Myths vs Reality</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+/* ─── TOKENS ─── */
+:root {
+  --bg:       #EBF4FF;
+  --primary:  #4F95FF;
+  --p-dark:   #1d4ed8;
+  --p-deep:   #0f2a5a;
+  --p-light:  #dbeeff;
+  --p-mid:    #bfdbfe;
+  --ink:      #0f2a5a;
+  --muted:    #4a6fa5;
+  --surface:  #ffffff;
+  --myth-bg:  #fee2e2;
+  --myth-ink: #7f1d1d;
+  --real-bg:  #dcfce7;
+  --real-ink: #14532d;
+  --radius:   20px;
+}
+
+/* ─── RESET ─── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ─── NAV ─── */
+.nav {
+  position:fixed; top:0; left:0; right:0; z-index:300;
+  height:56px; padding:0 2rem;
+  display:flex; align-items:center; justify-content:space-between;
+  background:rgba(235,244,255,0.93);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--p-mid);
+  transition:border-color .3s;
+}
+.nav-brand {
+  font-family:'DM Serif Display',serif;
+  font-size:1rem; color:var(--p-dark);
+  cursor:pointer; display:flex; align-items:center; gap:8px;
+}
+.nav-brand-dot {
+  width:8px;height:8px;border-radius:50%;background:var(--primary);
+  display:inline-block;
+}
+.nav-right { display:flex; align-items:center; gap:10px; }
+.nav-pill {
+  font-size:.65rem; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; background:var(--primary);
+  color:white; padding:4px 12px; border-radius:100px;
+}
+.nav-back-btn {
+  display:none; align-items:center; gap:5px;
+  font-size:.82rem; font-weight:600; color:var(--muted);
+  background:none; border:1.5px solid var(--p-mid);
+  padding:4px 14px; border-radius:100px; cursor:pointer;
+  transition:all .18s;
+}
+.nav-back-btn:hover { color:var(--ink); border-color:var(--primary); }
+.nav-back-btn.show { display:flex; }
+
+/* ─── HERO ─── */
+#hero {
+  min-height:100vh;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  text-align:center; padding:5rem 2rem 3rem;
+  position:relative; overflow:hidden;
+}
+.orb-wrap { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.orb {
+  position:absolute; border-radius:50%;
+  filter:blur(80px); opacity:.15;
+  animation:float 12s ease-in-out infinite alternate;
+}
+.orb-a{width:600px;height:600px;background:var(--primary);top:-20%;left:-20%;animation-delay:0s;}
+.orb-b{width:440px;height:440px;background:#60a5fa;top:30%;right:-16%;animation-delay:-4s;}
+.orb-c{width:380px;height:380px;background:#93c5fd;bottom:-12%;left:22%;animation-delay:-8s;}
+.orb-d{width:250px;height:250px;background:var(--primary);top:10%;right:25%;animation-delay:-2s;opacity:.08;}
+@keyframes float{from{transform:translate(0,0)scale(1);}to{transform:translate(28px,18px)scale(1.08);}}
+
+.hero-eyebrow {
+  display:inline-flex; align-items:center; gap:10px;
+  background:var(--surface); border:2px solid var(--ink);
+  border-radius:100px; padding:7px 22px;
+  font-size:.7rem; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; margin-bottom:2.2rem;
+  box-shadow:4px 4px 0 var(--primary);
+  animation:up .7s ease both;
+}
+.eyebrow-icon { font-size:.95rem; }
+
+.hero-title {
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2.6rem,5.8vw,5rem);
+  line-height:1.08; max-width:740px;
+  margin-bottom:1.4rem;
+  animation:up .7s .1s ease both;
+}
+.hero-title em {
+  font-style:italic;
+  background:linear-gradient(135deg,var(--primary) 0%,#60a5fa 60%,#a5c8ff 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+
+.hero-sub {
+  font-size:1.08rem; color:var(--muted);
+  max-width:500px; line-height:1.8;
+  margin-bottom:1rem;
+  animation:up .7s .2s ease both;
+}
+.hero-quote-line {
+  font-style:italic; font-size:.88rem;
+  color:var(--muted); opacity:.7;
+  margin-bottom:2.8rem;
+  animation:up .7s .3s ease both;
+}
+
+/* counter row */
+.hero-counters {
+  display:flex; gap:0; margin-bottom:3rem;
+  border:2px solid var(--ink); border-radius:16px;
+  overflow:hidden; background:var(--surface);
+  box-shadow:4px 4px 0 var(--primary);
+  animation:up .7s .35s ease both;
+}
+.counter-item {
+  padding:.9rem 2rem; text-align:center;
+  border-right:2px solid var(--p-mid);
+  flex:1;
+}
+.counter-item:last-child { border-right:none; }
+.counter-n {
+  font-family:'DM Serif Display',serif;
+  font-size:1.8rem; color:var(--primary); display:block;
+}
+.counter-l {
+  font-size:.68rem; font-weight:600; text-transform:uppercase;
+  letter-spacing:.07em; color:var(--muted); margin-top:2px; display:block;
+}
+
+.cta-row { display:flex; gap:1rem; align-items:center; animation:up .7s .4s ease both; }
+.btn-primary {
+  background:var(--ink); color:white;
+  font-family:'DM Sans',sans-serif; font-weight:700; font-size:1rem;
+  padding:.95rem 2.4rem; border-radius:100px; border:none; cursor:pointer;
+  box-shadow:4px 4px 0 var(--primary);
+  transition:transform .15s, box-shadow .15s;
+}
+.btn-primary:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--primary);}
+.btn-ghost {
+  background:transparent; color:var(--ink);
+  font-family:'DM Sans',sans-serif; font-weight:600; font-size:.95rem;
+  padding:.95rem 2rem; border-radius:100px; border:2px solid var(--p-mid); cursor:pointer;
+  transition:all .18s;
+}
+.btn-ghost:hover { border-color:var(--primary); color:var(--primary); }
+
+@keyframes up{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+
+/* ─── MYTH GRID (list view) ─── */
+#myth-grid {
+  display:none;
+  padding:5.5rem 2rem 4rem;
+  max-width:860px; margin:0 auto;
+}
+.mg-header { margin-bottom:2.8rem; }
+.mg-header h2 {
+  font-family:'DM Serif Display',serif;
+  font-size:2.4rem; margin-bottom:.4rem;
+}
+.mg-header p { color:var(--muted); font-size:.96rem; }
+
+.myth-count-bar {
+  display:flex; align-items:center; gap:12px;
+  margin-bottom:1.6rem; font-size:.82rem; color:var(--muted);
+}
+.mcb-line { flex:1; height:2px; background:var(--p-light); border-radius:2px; }
+.mcb-fill { height:100%; background:var(--primary); border-radius:2px; transition:width .6s ease; }
+
+.myths-list { display:flex; flex-direction:column; gap:1rem; }
+
+.myth-card {
+  background:var(--surface); border-radius:var(--radius);
+  border:2px solid var(--p-light); cursor:pointer;
+  overflow:hidden; transition:all .22s ease;
+  display:flex; flex-direction:column;
+}
+.myth-card:hover {
+  border-color:var(--primary);
+  box-shadow:0 8px 32px rgba(79,149,255,.14);
+  transform:translateY(-2px);
+}
+.myth-card.open { border-color:var(--primary); }
+
+.mc-header {
+  display:flex; align-items:center; gap:14px;
+  padding:1.3rem 1.6rem;
+}
+.mc-num {
+  width:36px; height:36px; border-radius:50%;
+  background:var(--p-light); color:var(--primary);
+  font-weight:700; font-size:.88rem;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.myth-card.open .mc-num { background:var(--primary); color:white; }
+
+.mc-myth-text {
+  flex:1; font-family:'DM Serif Display',serif;
+  font-size:1.05rem; line-height:1.35;
+}
+.mc-chevron {
+  font-size:1.1rem; color:var(--muted); transition:transform .25s;
+  flex-shrink:0;
+}
+.myth-card.open .mc-chevron { transform:rotate(180deg); color:var(--primary); }
+
+/* expandable body */
+.mc-body {
+  max-height:0; overflow:hidden;
+  transition:max-height .4s cubic-bezier(.4,0,.2,1);
+}
+.mc-body-inner { padding:0 1.6rem 1.6rem; }
+
+.mc-label-row {
+  display:flex; gap:8px; margin-bottom:1rem;
+}
+.mc-label {
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:.68rem; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; padding:3px 12px; border-radius:100px;
+}
+.lbl-myth { background:var(--myth-bg); color:var(--myth-ink); }
+.lbl-real { background:var(--real-bg); color:var(--real-ink); }
+
+.mc-myth-quote {
+  background:var(--myth-bg); border-radius:12px;
+  padding:1rem 1.3rem; margin-bottom:1rem;
+  font-style:italic; font-size:.95rem; color:var(--myth-ink); line-height:1.6;
+}
+.mc-reality {
+  font-size:.96rem; color:#334155; line-height:1.8;
+  margin-bottom:1rem;
+}
+.mc-reality p { margin-bottom:.8rem; }
+.mc-reality p:last-child { margin-bottom:0; }
+
+.mc-takeaway {
+  background:var(--p-light); border-radius:12px;
+  padding:.9rem 1.2rem;
+  font-size:.86rem; color:var(--p-deep); line-height:1.65;
+  display:flex; gap:9px; align-items:flex-start;
+}
+.mc-takeaway-icon { font-size:1rem; flex-shrink:0; margin-top:1px; }
+
+.read-deep-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  margin-top:1rem;
+  font-size:.8rem; font-weight:700; color:var(--primary);
+  background:none; border:1.5px solid var(--primary);
+  padding:5px 16px; border-radius:100px; cursor:pointer;
+  transition:all .18s;
+}
+.read-deep-btn:hover { background:var(--primary); color:white; }
+
+/* progress chips */
+.progress-strip {
+  display:flex; gap:6px; flex-wrap:wrap; margin-bottom:1.4rem;
+}
+.chip {
+  width:28px; height:6px; border-radius:3px;
+  background:var(--p-mid); transition:background .3s;
+}
+.chip.read { background:var(--primary); }
+
+/* ─── DEEP DIVE (detail view) ─── */
+#deep-dive {
+  display:none;
+  max-width:680px; margin:0 auto;
+  padding:5.5rem 2rem 6rem;
+}
+
+.dd-band {
+  height:6px; border-radius:100px; margin-bottom:2.2rem;
+  background:linear-gradient(90deg,var(--primary),#60a5fa,#bae6fd);
+}
+.dd-eyebrow {
+  display:flex; align-items:center; gap:10px; margin-bottom:1rem; flex-wrap:wrap;
+}
+.dd-topic-tag {
+  font-size:.68rem; font-weight:700; letter-spacing:.09em;
+  text-transform:uppercase; padding:4px 13px; border-radius:100px;
+  background:var(--p-light); color:var(--primary);
+}
+.dd-read-time { font-size:.78rem; color:var(--muted); }
+
+.dd-title {
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(1.9rem,4.5vw,2.8rem);
+  line-height:1.1; margin-bottom:.9rem;
+}
+.dd-deck {
+  font-size:1.05rem; color:var(--muted); line-height:1.78;
+  padding-bottom:1.8rem; border-bottom:2px solid var(--p-light);
+  margin-bottom:2rem;
+}
+
+.dd-body h2 {
+  font-family:'DM Serif Display',serif;
+  font-size:1.55rem; margin:2.2rem 0 .65rem;
+}
+.dd-body h3 { font-size:1.02rem; font-weight:600; margin:1.6rem 0 .45rem; }
+.dd-body p { font-size:1rem; line-height:1.88; color:#334155; margin-bottom:1.15rem; }
+
+.pullquote {
+  border-left:5px solid var(--primary);
+  background:var(--p-light);
+  padding:1.2rem 1.6rem; border-radius:0 16px 16px 0;
+  margin:2rem 0;
+  font-family:'DM Serif Display',serif;
+  font-style:italic; font-size:1.1rem; line-height:1.65; color:var(--ink);
+}
+.keybox {
+  background:var(--p-light); border-radius:16px;
+  padding:1.4rem 1.7rem; margin:2rem 0;
+}
+.keybox-title {
+  font-weight:700; font-size:.74rem; text-transform:uppercase;
+  letter-spacing:.09em; color:var(--primary);
+  display:block; margin-bottom:.75rem;
+}
+.keybox ul { padding-left:1.2rem; }
+.keybox li { font-size:.93rem; color:var(--ink); line-height:1.7; margin-bottom:.35rem; }
+
+.dd-myth-box {
+  background:var(--myth-bg); border-radius:16px;
+  padding:1.3rem 1.6rem; margin:1.5rem 0;
+  border-left:4px solid #ef4444;
+}
+.dd-myth-box .box-label {
+  font-size:.65rem; font-weight:700; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--myth-ink); display:block; margin-bottom:.5rem;
+}
+.dd-myth-box p { font-size:.95rem; color:var(--myth-ink); line-height:1.7; margin:0; }
+
+.dd-real-box {
+  background:var(--real-bg); border-radius:16px;
+  padding:1.3rem 1.6rem; margin:1.5rem 0;
+  border-left:4px solid #22c55e;
+}
+.dd-real-box .box-label {
+  font-size:.65rem; font-weight:700; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--real-ink); display:block; margin-bottom:.5rem;
+}
+.dd-real-box p { font-size:.95rem; color:var(--real-ink); line-height:1.7; margin:0; }
+
+.dd-takeaway {
+  margin-top:2.4rem; padding:1.5rem 1.7rem;
+  border-radius:18px; border:2px solid var(--primary);
+  background:var(--p-light);
+}
+.takeaway-label {
+  font-weight:700; font-size:.7rem; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--primary);
+  display:block; margin-bottom:.55rem;
+}
+.dd-takeaway p { font-size:.93rem; color:var(--ink); line-height:1.72; margin:0; }
+
+.back-to-grid-btn {
+  display:block; text-align:center;
+  background:var(--ink); color:white;
+  font-family:'DM Sans',sans-serif; font-weight:700; font-size:.95rem;
+  padding:.95rem 2rem; border-radius:100px; border:none; cursor:pointer;
+  margin-top:2.8rem; box-shadow:3px 3px 0 var(--primary);
+  transition:opacity .15s,transform .15s;
+}
+.back-to-grid-btn:hover { opacity:.88; transform:translateY(-1px); }
+
+@media(max-width:540px){
+  .hero-counters{flex-direction:column;}
+  .counter-item{border-right:none;border-bottom:2px solid var(--p-mid);}
+  .counter-item:last-child{border-bottom:none;}
+  .cta-row{flex-direction:column;width:100%;}
+  .btn-primary,.btn-ghost{width:100%;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav class="nav">
+  <div class="nav-brand" onclick="showHero()" style="cursor:pointer;">
+    <span class="nav-brand-dot"></span>Depression · Myths vs Reality
+  </div>
+  <div class="nav-right">
+    <button class="nav-back-btn" id="navBack" onclick="navBack()">← Back</button>
+    <span class="nav-pill">Mental Health</span>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="orb-wrap">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="orb orb-c"></div>
+    <div class="orb orb-d"></div>
+  </div>
+
+  <div class="hero-eyebrow">
+    <span class="eyebrow-icon">🔍</span>
+    Myth-Busting · Evidence-Based · Clear
+  </div>
+
+  <h1 class="hero-title">
+    What You've Been<br>Told About<br><em>Depression Is Wrong</em>
+  </h1>
+
+  <p class="hero-sub">
+    Myths about depression delay help-seeking, deepen shame, and cost lives.
+    Here are the most persistent ones — and exactly why they are false.
+  </p>
+
+  <p class="hero-quote-line">
+    "The greatest barrier to treatment is not lack of access — it is false belief." — WHO
+  </p>
+
+  <div class="hero-counters">
+    <div class="counter-item">
+      <span class="counter-n">8</span>
+      <span class="counter-l">Myths Busted</span>
+    </div>
+    <div class="counter-item">
+      <span class="counter-n">280M</span>
+      <span class="counter-l">People Affected</span>
+    </div>
+    <div class="counter-item">
+      <span class="counter-n">~70%</span>
+      <span class="counter-l">Never Get Treatment</span>
+    </div>
+  </div>
+
+  <div class="cta-row">
+    <button class="btn-primary" onclick="showGrid()">Explore the Myths →</button>
+    <button class="btn-ghost" onclick="showGrid()">All 8 myths</button>
+  </div>
+</section>
+
+<!-- ══ MYTH GRID ══ -->
+<section id="myth-grid">
+  <div class="mg-header">
+    <h2>Depression — Myths vs Reality</h2>
+    <p>Tap any myth to reveal what the evidence actually shows.</p>
+  </div>
+
+  <div class="progress-strip" id="progressStrip"></div>
+
+  <div class="myth-count-bar">
+    <span id="readCount">0 of 8 explored</span>
+    <div class="mcb-line"><div class="mcb-fill" id="mcbFill" style="width:0%"></div></div>
+  </div>
+
+  <div class="myths-list" id="mythsList"></div>
+</section>
+
+<!-- ══ DEEP DIVE ══ -->
+<section id="deep-dive">
+  <div id="deepContent"></div>
+</section>
+
+<!-- ══ DATA + LOGIC ══ -->
+<script>
+const myths = [
+  {
+    myth: "Depression is just extreme sadness — it's about feeling very low.",
+    deepTitle: "Depression Is Not Sadness With the Volume Turned Up",
+    deck: "Equating depression with sadness is one of the most consequential misunderstandings in mental health. It causes people to dismiss their own symptoms, invalidates lived experience, and makes it harder to recognise a medical condition that requires treatment.",
+    readTime: "6 min",
+    body: `
+<h2>The Sadness Myth and Why It Matters</h2>
+<p>When most people imagine depression, they picture intense, sustained sadness. Crying. Looking visibly distressed. The image is culturally ubiquitous — and it is wrong for a significant proportion of people who live with the condition. Depression's primary feature, for many people, is not sadness at all. It is <em>anhedonia</em>: the absence of pleasure, the flattening of feeling, the experience of life happening at a remove, as though you are watching it through thick glass.</p>
+<p>This matters enormously in practice. People whose depression presents as numbness rather than sadness frequently do not recognise themselves in the cultural picture of depression. They conclude they are not depressed — just unmotivated, tired, difficult. They do not seek help. The condition deepens, and the misidentification continues.</p>
+<div class="dd-myth-box"><span class="box-label">❌ The myth</span><p>"If I were really depressed, I'd be crying all the time and unable to get out of bed. I'm still functioning, so it must just be stress."</p></div>
+<div class="dd-real-box"><span class="box-label">✓ The reality</span><p>Depression can and frequently does present as emotional flatness, inability to feel pleasure, persistent physical fatigue, and continued surface-level functioning. Functioning is not evidence of wellness.</p></div>
+<h2>What Depression Actually Involves</h2>
+<p>The DSM-5 diagnostic criteria for a Major Depressive Episode require either depressed mood or loss of interest/pleasure — but not necessarily both, and not necessarily visible distress. Five or more symptoms must be present: changes in sleep, appetite, energy, concentration, psychomotor activity, feelings of worthlessness or guilt, and, in severe cases, thoughts of death. Sadness is one possible feature. It is not a prerequisite.</p>
+<p>For men specifically, depression frequently manifests as irritability, anger, reckless behaviour, or excessive work rather than visible sadness. Men are consistently underdiagnosed with depression partly because their presentations do not match the expected picture. The suicide rate among men — significantly higher than among women — is in part a consequence of this diagnostic gap.</p>
+<div class="pullquote">"I didn't feel sad. I felt nothing. And nothing turned out to be much harder to explain to people than sad would have been."</div>
+<h2>High-Functioning Depression</h2>
+<p>High-functioning depression — not a formal diagnostic category, but a widely recognised clinical presentation — describes people who maintain careers, relationships, and social performance while experiencing significant internal suffering. The performance of okayness requires enormous energy that is not available for actually living. People in this position are often the last to be identified as depressed by those around them, and frequently the last to identify themselves that way.</p>
+    `,
+    takeaway: "If you have been feeling flat, joyless, fatigued, or disconnected from your own life for more than two weeks — even if you are still functioning, and even if you are not particularly sad — please speak to a doctor. Depression does not require visible distress to be real and serious."
+  },
+  {
+    myth: "Depression is a sign of personal weakness or a character flaw.",
+    deepTitle: "Depression Is a Medical Condition, Not a Moral Failure",
+    deck: "The belief that depression reflects weakness is the single most damaging myth in mental health. It keeps people from seeking help, compounds suffering with shame, and has no basis in evidence.",
+    readTime: "7 min",
+    body: `
+<h2>Where the Weakness Myth Comes From</h2>
+<p>The framing of depression as weakness has deep cultural roots. In societies that prize self-sufficiency, emotional stoicism, and the capacity to push through difficulty, any condition that compromises these abilities becomes morally loaded. Depression interferes with motivation, concentration, energy, and decisiveness — the very qualities associated with strength — and so its presence is interpreted, incorrectly, as their absence from the person's character.</p>
+<p>This interpretation is circular and wrong. Depression doesn't reveal that a person lacks strength; it creates conditions under which strength is harder to express, in the same way that pneumonia doesn't reveal that a person lacks physical fitness — it creates conditions under which physical fitness is temporarily inaccessible.</p>
+<div class="dd-myth-box"><span class="box-label">❌ The myth</span><p>"Strong people don't get depressed. If you had a better attitude and worked harder on your mindset, you wouldn't need to call it an illness."</p></div>
+<div class="dd-real-box"><span class="box-label">✓ The reality</span><p>Depression affects people across every demographic, personality type, and level of achievement. It has measurable neurobiological correlates. It is not caused by insufficient willpower and it cannot be resolved by willpower alone.</p></div>
+<h2>Who Gets Depressed</h2>
+<p>If depression were a function of character weakness, we would expect to see it concentrated among people who demonstrate low resilience, low achievement, or low determination in other domains. We do not see this. Depression affects elite athletes, decorated military veterans, award-winning scientists, heads of state, and people whose professional and personal lives appear, from the outside, to represent precisely the qualities that the weakness theory predicts would protect against it.</p>
+<p>Winston Churchill famously referred to his depression as "the black dog." Abraham Lincoln struggled with what contemporaries described as severe, prolonged melancholia. Contemporary figures across sport, entertainment, science, and politics have described clinical depression — not as cautionary tales about weakness, but as examples of how the condition operates without regard for personal attributes or achievements.</p>
+<div class="pullquote">"Telling a depressed person to try harder is like telling someone with appendicitis to try harder not to have appendicitis. The mechanism you're invoking isn't the one that's broken."</div>
+<h2>The Neurobiological Evidence</h2>
+<p>Brain imaging studies consistently demonstrate structural and functional differences in the brains of people with depression compared to those without: reduced hippocampal volume, altered activity in the prefrontal cortex and anterior cingulate cortex, dysregulation of the HPA axis stress-response system. These are not metaphors for weakness. They are measurable differences in brain biology — as real as the differences visible in a broken bone on an X-ray, simply less immediately visible to the naked eye.</p>
+    `,
+    takeaway: "Depression is no more a sign of weakness than diabetes or hypertension. It is a medical condition with biological mechanisms, and seeking treatment for it is an act of intelligence and courage — not an admission of inadequacy."
+  },
+  {
+    myth: "You can snap out of depression if you really try — just think positive.",
+    deepTitle: "Why Positive Thinking Cannot Treat Depression",
+    deck: "Positive thinking as a treatment for clinical depression is not just ineffective — it can actively worsen outcomes by adding a layer of self-blame when it doesn't work. Understanding why helps explain why effective treatments are structured differently.",
+    readTime: "6 min",
+    body: `
+<h2>The Fundamental Misunderstanding</h2>
+<p>The "just think positive" prescription for depression rests on an assumption: that depression is a thinking problem that can be corrected by different thoughts. This assumption is wrong in a specific and important way. Depression does involve distorted negative thinking — cognitive behavioural therapy has documented this extensively. But the distorted thinking is a symptom of depression, not its cause. Treating the symptom with an act of will — deciding to think differently — without addressing the underlying condition is like deciding to have a lower temperature during a fever. The decision is real; the mechanism to produce the desired outcome is not available to you.</p>
+<div class="dd-myth-box"><span class="box-label">❌ The myth</span><p>"If you just chose to focus on the good things, practised gratitude, and stopped dwelling, you'd feel better. It's a matter of mindset."</p></div>
+<div class="dd-real-box"><span class="box-label">✓ The reality</span><p>Depression compromises the very cognitive machinery that would be required to "think your way out" of it. The prefrontal cortex — which governs rational thinking and emotional regulation — functions differently during a depressive episode. Effective treatment works with this biology, not against it.</p></div>
+<h2>Why This Advice Causes Harm</h2>
+<p>When positive thinking is offered as a depression treatment and doesn't work — which it reliably does not, for clinical depression — the natural conclusion is that the person hasn't tried hard enough. This adds shame and self-blame to an already self-critical state. It reinforces the illness's own narrative ("I'm failing at this, I can't do anything right") and deepens the depression it was supposed to address. The advice is not just useless; it is actively counterproductive.</p>
+<div class="pullquote">"The part of my brain I would have needed to 'just think positively' was the part the depression had specifically impaired. It was like being told to use the broken arm to fix itself."</div>
+<h2>What CBT Actually Does — And Doesn't Do</h2>
+<p>Cognitive Behavioural Therapy does work with thinking — but not by replacing negative thoughts with positive ones. It works by helping people identify systematic distortions in their thinking (catastrophising, black-and-white thinking, personalisation) and develop more accurate, evidence-based perspectives. The mechanism is accuracy, not positivity. And it works alongside, not instead of, biological treatment where that is indicated. CBT requires a structured, skilled therapeutic relationship to be effective. It is not the same as positive thinking, and it cannot be self-administered by deciding to feel better.</p>
+    `,
+    takeaway: "If positive thinking or gratitude practices have failed to help your depression, this is not evidence of your inadequacy. It is evidence that you need an appropriate treatment — evidence-based therapy, medical assessment, or both. Please see a doctor."
+  },
+  {
+    myth: "Antidepressants are addictive and change who you are as a person.",
+    deepTitle: "The Truth About Antidepressants — What They Do and Don't Do",
+    deck: "Fears about antidepressants keep many people from accessing effective treatment. Some concerns are valid and worth addressing honestly. Many others are myths that deserve direct rebuttal.",
+    readTime: "8 min",
+    body: `
+<h2>Are Antidepressants Addictive?</h2>
+<p>This question requires a careful answer, because it conflates two different phenomena: physical dependence and addiction. Addiction, in the clinical sense, involves compulsive drug-seeking behaviour, craving, and escalating doses to achieve the same effect — phenomena associated with opioids, benzodiazepines, and stimulants. Antidepressants do not produce these patterns. People on antidepressants do not crave them, do not take increasing doses to feel the same effect, and do not exhibit drug-seeking behaviour.</p>
+<p>What antidepressants can produce is physical dependence — meaning that discontinuing them abruptly, particularly after extended use, can produce discontinuation symptoms including dizziness, flu-like sensations, sleep disturbance, and irritability. These symptoms are real and can be significant. They are not the same as addiction, and they are managed by tapering the medication slowly under medical guidance rather than stopping abruptly.</p>
+<div class="dd-myth-box"><span class="box-label">❌ The myth</span><p>"Once you start antidepressants, you'll be on them forever and you'll become dependent on them like any other addictive drug."</p></div>
+<div class="dd-real-box"><span class="box-label">✓ The reality</span><p>Antidepressants are not addictive in the clinical sense. Many people take them for a defined period (typically at least 6–12 months after remission) and discontinue successfully with appropriate tapering. The decision about duration should be made with a prescribing doctor.</p></div>
+<h2>Do Antidepressants Change Your Personality?</h2>
+<p>Many people fear that antidepressants will alter their fundamental self — flattening their emotions, dulling their creativity, or producing a medicated version of themselves that is not authentically them. This fear is understandable but largely unfounded for most people on appropriate medications at appropriate doses.</p>
+<p>The consistent finding from patients who respond well to antidepressants is the opposite of personality change: they describe feeling more like themselves. The depression — with its pervasive negativity, fatigue, and anhedonia — had been the thing distorting their personality. The antidepressant, by treating the depression, allows them to return to who they are rather than who the illness made them.</p>
+<div class="pullquote">"I was afraid the medication would change me. What I hadn't considered was that the depression had already changed me — and the medication was what brought me back."</div>
+<h2>What Antidepressants Actually Do</h2>
+<p>SSRIs and SNRIs — the most commonly prescribed antidepressants — work primarily by modulating the availability of neurotransmitters including serotonin and noradrenaline in neural synapses. They also increase BDNF (brain-derived neurotrophic factor), which supports neuroplasticity. They do not produce the immediate relief of a painkiller — typical response time is two to four weeks, with full effect sometimes taking six to eight weeks. They are most effective in combination with psychological treatment, not as a standalone intervention.</p>
+<div class="keybox">
+<span class="keybox-title">Common concerns addressed honestly:</span>
+<ul>
+<li><strong>Side effects:</strong> Common, but most are temporary (first 1–2 weeks) and manageable. Discuss any persistent ones with your prescriber.</li>
+<li><strong>Duration:</strong> NICE recommends at least 6 months after remission; longer for recurrent depression. This is a clinical decision, not a life sentence.</li>
+<li><strong>Effectiveness:</strong> Around 50–60% of people respond well to the first antidepressant tried; switching or combining is often necessary and works.</li>
+<li><strong>Coming off:</strong> Should be done slowly, with medical guidance. Never stop abruptly.</li>
+</ul>
+</div>
+    `,
+    takeaway: "The decision about whether to take antidepressants should be made with a doctor based on your specific situation, severity, and preferences — not based on myths. The medications are not addictive in the clinical sense, they do not change who you fundamentally are, and for many people they make effective psychological treatment possible."
+  },
+  {
+    myth: "Depression always has a clear cause — if your life is good, you can't be depressed.",
+    deepTitle: "Why Depression Doesn't Need a Reason — And Why Asking for One Is Harmful",
+    deck: "The demand for a justification for depression — 'but what do you have to be depressed about?' — is among the most invalidating things said to people with the condition. Understanding why depression doesn't require a cause changes how we relate to it.",
+    readTime: "6 min",
+    body: `
+<h2>The Demand for a Reason</h2>
+<p>Depression is unique among medical conditions in the degree to which sufferers are expected to justify it. Nobody asks a person with hypertension what they have to be stressed about. Nobody demands that someone with Type 1 diabetes explain why their pancreas deserves to malfunction. But people with depression are routinely confronted with the implicit or explicit demand: what do you have to be depressed about?</p>
+<p>This question encodes a false assumption — that depression is a proportionate response to circumstances, like sadness or grief, and that sufficiently good circumstances should prevent or resolve it. Depression is not a proportionate response to circumstances. It is a medical condition that arises from a complex interaction of genetic vulnerability, neurobiological factors, life history, and sometimes — but not always — precipitating events.</p>
+<div class="dd-myth-box"><span class="box-label">❌ The myth</span><p>"You have a good job, a loving family, and your health. There's no reason for you to be depressed. You should count your blessings."</p></div>
+<div class="dd-real-box"><span class="box-label">✓ The reality</span><p>Depression is not caused by a shortage of blessings. It is caused by a complex interaction of genetic, neurobiological, and environmental factors. It can occur during objectively good periods and in objectively good circumstances. The question "what do you have to be depressed about?" has no meaningful answer because it asks the wrong question.</p></div>
+<h2>Endogenous vs. Reactive Depression</h2>
+<p>Psychiatry has long distinguished between reactive depression (arising in direct response to life events) and endogenous depression (arising primarily from internal biological factors without an obvious external trigger). While this distinction is less rigidly maintained in contemporary diagnostic frameworks — depressive episodes on a spectrum rather than categorically different types — the clinical reality it points to is real: many depressive episodes have no identifiable precipitating cause and arise in the absence of significant external stressors.</p>
+<div class="pullquote">"Telling someone with depression that their life is too good for them to be depressed is like telling someone with a brain tumour that their lifestyle is too healthy for them to be ill. The condition doesn't negotiate with the circumstances."</div>
+<h2>The Guilt Compound</h2>
+<p>When people with depression are told they have no reason to feel as they do, the depression's own cognitive distortions engage with this information. Depression produces guilt and worthlessness. Being told you shouldn't feel this way when your life is objectively good compounds that guilt: you are now not just depressed, but ungrateful for being depressed. The guilt about the guilt deepens the depression. The well-intentioned comparison ("but think of people who have real problems") reliably makes things worse.</p>
+    `,
+    takeaway: "You do not need to have a bad life, a difficult past, or a justifiable reason to have clinical depression. If you are experiencing depressive symptoms, they are real regardless of your external circumstances — and they deserve assessment and treatment regardless of how good your life 'looks'."
+  },
+  {
+    myth: "Talking about depression or asking someone if they're suicidal makes things worse.",
+    deepTitle: "Why Asking About Depression and Suicide Makes Things Better, Not Worse",
+    deck: "The fear of making things worse by raising the topic of depression or suicide stops many people from having conversations that could be lifesaving. The evidence consistently shows the opposite of what the fear predicts.",
+    readTime: "5 min",
+    body: `
+<h2>The Fear of Planting the Idea</h2>
+<p>One of the most widespread concerns among people who suspect someone they know is depressed or suicidal is that raising the topic will somehow cause harm — that asking about it will plant an idea that wasn't there, or deepen a distress that might otherwise have resolved. This fear is understandable, deeply human, and not supported by evidence.</p>
+<p>Multiple studies have examined whether asking about suicide increases suicidal ideation or behaviour in vulnerable people. The consistent finding is that it does not. A systematic review published in Psychological Medicine found that, across studies, asking about suicidal thoughts had no negative effect and in many cases provided measurable relief to those asked — the relief of being seen, of the unspoken thing being named, of no longer having to carry the secret alone.</p>
+<div class="dd-myth-box"><span class="box-label">❌ The myth</span><p>"If I ask my friend whether they're thinking about suicide, I'll put the idea in their head or make things worse. It's better not to bring it up."</p></div>
+<div class="dd-real-box"><span class="box-label">✓ The reality</span><p>Research consistently shows that asking about suicide does not increase suicidal ideation or behaviour. For people who are already struggling, being asked directly is frequently experienced as profound relief — someone cares enough to ask the question others are avoiding.</p></div>
+<h2>What Actually Helps</h2>
+<p>When someone you care about seems to be struggling, asking directly — "Are you having thoughts of suicide?" rather than vague euphemisms — gives them permission to answer honestly. Vague questions ("are you okay?") invite vague reassurances ("yes, fine"). Direct questions create space for direct answers. The directness signals that you can handle the answer, which makes the answer more likely to be honest.</p>
+<div class="pullquote">"The most relieving thing anyone said to me was 'I've been worried about you — are you having thoughts of ending your life?' Someone finally asked. I finally didn't have to hide it."</div>
+<h2>On Talking About Depression</h2>
+<p>The same principle applies to depression more broadly. Conversations that name what is happening — that use the word "depression" rather than careful circumlocutions — are more helpful than those that don't. Naming the condition reduces shame, normalises help-seeking, and provides a shared language for something that has been silently isolating the person struggling with it. Not talking about depression does not protect people. It protects the discomfort of those around them.</p>
+    `,
+    takeaway: "If you are worried about someone, ask them directly. You will not make things worse. You may make them significantly better. Safe conversations about depression and suicidal thoughts save lives — and the evidence supports this without ambiguity."
+  },
+  {
+    myth: "Depression is a modern or Western condition — it didn't exist in the past.",
+    deepTitle: "Depression Is Ancient, Universal, and Has Always Existed",
+    deck: "The claim that depression is a modern invention — a product of soft contemporary culture, social media, or Western excess — misreads history, dismisses the condition, and contributes to harmful stigma.",
+    readTime: "5 min",
+    body: `
+<h2>Depression in History</h2>
+<p>The earliest detailed clinical description of what we now recognise as depression appears in the writings of Hippocrates, circa 400 BCE, who described "melancholia" — a condition characterised by persistent fear and despondency — as a medical condition arising from an excess of black bile. The description is biologically wrong in its proposed mechanism, but clinically recognisable: persistent low mood, loss of appetite, sleeplessness, and despair.</p>
+<p>Ancient Egyptian medical papyri describe depressive-like states. Medieval Islamic physician Avicenna described the symptoms of melancholia in clinical detail in the 11th century. Robert Burton's "The Anatomy of Melancholy" (1621) — an exhaustive treatise on what we would now recognise as depression — draws on thousands of years of prior description. The condition is not new. The language for it has evolved. The condition has not.</p>
+<div class="dd-myth-box"><span class="box-label">❌ The myth</span><p>"Depression is a modern invention — people in previous generations just got on with things. It's a consequence of how soft and entitled contemporary culture has become."</p></div>
+<div class="dd-real-box"><span class="box-label">✓ The reality</span><p>Depression has been documented across cultures and throughout recorded history. It appears in ancient Egyptian, Greek, Islamic, and Chinese medical literature. It is not a modern invention, a cultural product of Western softness, or a consequence of contemporary life. It is an ancient, universal condition with neurobiological roots.</p></div>
+<div class="pullquote">"In previous generations, people did not 'just get on with things' through depression. They suffered in silence without any framework for understanding what was happening to them — and many did not survive it."</div>
+<h2>Cross-Cultural Evidence</h2>
+<p>Epidemiological studies across dozens of cultures and countries consistently find depression in every population studied. Prevalence rates and symptom presentations vary somewhat across cultures — which tells us about the interaction of biology with social context — but the underlying condition is not culturally specific. It appears wherever human brains exist, because it is a condition of the human brain, not of any particular culture or historical moment.</p>
+    `,
+    takeaway: "Depression is not a modern weakness. It is an ancient human condition with neurobiological roots that has existed across every culture and every historical period. Framing it as a contemporary invention dismisses real suffering and discourages people from seeking treatment for a real medical condition."
+  },
+  {
+    myth: "Once you've recovered from depression, it won't come back.",
+    deepTitle: "Understanding Depression's Recurrence — And How to Reduce It",
+    deck: "For many people, depression is a recurring condition rather than a one-time event. This is not cause for despair — it is information that, used well, significantly changes outcomes. Understanding recurrence is the foundation of protecting against it.",
+    readTime: "7 min",
+    body: `
+<h2>The Recurrence Reality</h2>
+<p>The statistics on depression recurrence are sobering but important to know: approximately 50% of people who experience a first depressive episode will experience a second. After two episodes, the risk of a third rises to around 70%. After three episodes, it approaches 90%. These figures do not mean that recurrence is inevitable or that recovery is illusory. They mean that for many people, depression is a chronic, recurring condition — like asthma or migraines — that requires ongoing management rather than a single course of treatment followed by permanent resolution.</p>
+<p>Knowing this changes the approach to recovery. Rather than treating a depressive episode as something to get through and then forget, people who understand recurrence treat their recovery as an ongoing project — building and maintaining the conditions that support their wellbeing and protect against future episodes.</p>
+<div class="dd-myth-box"><span class="box-label">❌ The myth</span><p>"I recovered from depression, so that chapter is closed. It happened once and it won't happen again — I just need to stay strong."</p></div>
+<div class="dd-real-box"><span class="box-label">✓ The reality</span><p>Depression has a high recurrence rate, particularly for those who have had multiple episodes. This is not a character failing — it reflects the neurobiological nature of the condition. The most effective response is not denial but active relapse prevention.</p></div>
+<h2>What Protects Against Recurrence</h2>
+<p>The good news is that recurrence risk is significantly modifiable. Mindfulness-Based Cognitive Therapy (MBCT) — specifically designed for people with recurrent depression — reduces relapse rates by approximately 50% compared to usual care in people who have had three or more episodes. Continuation of antidepressant medication beyond the initial remission period (NICE recommends at least six months after remission, and considerably longer for those with multiple episodes) significantly reduces recurrence risk. Sustained attention to sleep, exercise, social connection, and stress management provides additional protection.</p>
+<div class="pullquote">"Understanding that depression might return was the most important thing my therapist told me. It meant I could prepare — rather than being ambushed."</div>
+<div class="keybox">
+<span class="keybox-title">Building your relapse prevention plan:</span>
+<ul>
+<li>Identify your personal early warning signs — what changes first for you?</li>
+<li>Write a list of three people you will contact when you notice the signs</li>
+<li>Keep your GP and therapist's contacts easily accessible</li>
+<li>Maintain the lifestyle foundations (sleep, movement, connection) as ongoing commitments, not temporary recovery tools</li>
+<li>Ask your doctor about MBCT if you have had three or more episodes</li>
+<li>Make a written plan when you are well — depression compromises the planning you'd need to make one in the moment</li>
+</ul>
+</div>
+    `,
+    takeaway: "Depression's potential to recur is not a reason for despair — it is information. The people who do best over time are those who take that information seriously, build effective relapse prevention strategies, and seek help at the first signs of a return rather than waiting for the crisis."
+  }
+];
+
+/* ─── STATE ─── */
+let openIdx = null;
+let readSet = new Set();
+let view = 'hero'; // hero | grid | deep
+
+/* ─── NAV BACK ─── */
+function navBack() {
+  if (view === 'deep') showGrid();
+  else if (view === 'grid') showHero();
+}
+
+/* ─── SHOW HERO ─── */
+function showHero() {
+  view = 'hero';
+  document.getElementById('hero').style.display = 'flex';
+  document.getElementById('myth-grid').style.display = 'none';
+  document.getElementById('deep-dive').style.display = 'none';
+  document.getElementById('navBack').classList.remove('show');
+  window.scrollTo({ top: 0 });
+}
+
+/* ─── SHOW GRID ─── */
+function showGrid() {
+  view = 'grid';
+  document.getElementById('hero').style.display = 'none';
+  document.getElementById('myth-grid').style.display = 'block';
+  document.getElementById('deep-dive').style.display = 'none';
+  document.getElementById('navBack').classList.add('show');
+  renderGrid();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ─── SHOW DEEP ─── */
+function showDeep(i) {
+  view = 'deep';
+  readSet.add(i);
+  const m = myths[i];
+  document.getElementById('hero').style.display = 'none';
+  document.getElementById('myth-grid').style.display = 'none';
+  document.getElementById('deep-dive').style.display = 'block';
+  document.getElementById('navBack').classList.add('show');
+
+  document.getElementById('deepContent').innerHTML = `
+    <button onclick="showGrid()" style="display:inline-flex;align-items:center;gap:6px;font-size:.85rem;font-weight:600;color:var(--muted);background:none;border:none;cursor:pointer;margin-bottom:2rem;">← All Myths</button>
+    <div class="dd-band"></div>
+    <div class="dd-eyebrow">
+      <span class="dd-topic-tag">Myth ${i+1} of ${myths.length}</span>
+      <span class="dd-read-time">${m.readTime} read</span>
+    </div>
+    <h1 class="dd-title">${m.deepTitle}</h1>
+    <p class="dd-deck">${m.deck}</p>
+    <div class="dd-body">${m.body}</div>
+    <div class="dd-takeaway">
+      <span class="takeaway-label">💙 Key takeaway</span>
+      <p>${m.takeaway}</p>
+    </div>
+    ${i < myths.length - 1 ? `<button class="back-to-grid-btn" onclick="showDeep(${i+1})">Next Myth: "${myths[i+1].myth.slice(0,48)}…" →</button>` : `<button class="back-to-grid-btn" onclick="showGrid()">← Back to All Myths</button>`}
+  `;
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateProgress();
+}
+
+/* ─── RENDER GRID ─── */
+function renderGrid() {
+  // progress strip
+  const strip = document.getElementById('progressStrip');
+  strip.innerHTML = myths.map((_, i) =>
+    `<div class="chip ${readSet.has(i) ? 'read' : ''}"></div>`
+  ).join('');
+
+  // count bar
+  const pct = (readSet.size / myths.length * 100).toFixed(0);
+  document.getElementById('readCount').textContent = `${readSet.size} of ${myths.length} explored`;
+  document.getElementById('mcbFill').style.width = pct + '%';
+
+  // cards
+  const list = document.getElementById('mythsList');
+  list.innerHTML = '';
+  myths.forEach((m, i) => {
+    const card = document.createElement('div');
+    card.className = 'myth-card' + (openIdx === i ? ' open' : '');
+    card.innerHTML = `
+      <div class="mc-header" onclick="toggleCard(${i})">
+        <div class="mc-num">${readSet.has(i) ? '✓' : i+1}</div>
+        <div class="mc-myth-text">"${m.myth}"</div>
+        <div class="mc-chevron">▾</div>
+      </div>
+      <div class="mc-body" id="mcb-${i}">
+        <div class="mc-body-inner">
+          <div class="mc-label-row">
+            <span class="mc-label lbl-myth">❌ Myth</span>
+            <span class="mc-label lbl-real">✓ Reality</span>
+          </div>
+          <div class="mc-myth-quote">"${m.myth}"</div>
+          <div class="mc-reality">${buildSnippet(m.body)}</div>
+          <div class="mc-takeaway">
+            <span class="mc-takeaway-icon">💙</span>
+            <span>${m.takeaway}</span>
+          </div>
+          <button class="read-deep-btn" onclick="showDeep(${i})">Read full deep-dive →</button>
+        </div>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  // restore open state
+  if (openIdx !== null) {
+    setTimeout(() => expandCard(openIdx, false), 50);
+  }
+}
+
+function buildSnippet(body) {
+  // extract first <p> tag content as snippet
+  const match = body.match(/<p>([\s\S]*?)<\/p>/);
+  if (!match) return '';
+  const text = match[1].replace(/<[^>]+>/g, '');
+  return `<p>${text.slice(0, 260)}${text.length > 260 ? '…' : ''}</p>`;
+}
+
+function toggleCard(i) {
+  if (openIdx === i) {
+    collapseCard(i);
+    openIdx = null;
+  } else {
+    if (openIdx !== null) collapseCard(openIdx);
+    openIdx = i;
+    expandCard(i, true);
+    readSet.add(i);
+    updateProgress();
+  }
+}
+
+function expandCard(i, animate) {
+  const body = document.getElementById('mcb-' + i);
+  const card = body?.closest('.myth-card');
+  if (!body) return;
+  body.style.maxHeight = body.scrollHeight + 300 + 'px';
+  if (card) card.classList.add('open');
+}
+
+function collapseCard(i) {
+  const body = document.getElementById('mcb-' + i);
+  const card = body?.closest('.myth-card');
+  if (!body) return;
+  body.style.maxHeight = '0';
+  if (card) card.classList.remove('open');
+}
+
+function updateProgress() {
+  // live update chips and bar without full re-render
+  document.querySelectorAll('.chip').forEach((c, i) => {
+    c.classList.toggle('read', readSet.has(i));
+  });
+  const pct = (readSet.size / myths.length * 100).toFixed(0);
+  const fill = document.getElementById('mcbFill');
+  const count = document.getElementById('readCount');
+  if (fill) fill.style.width = pct + '%';
+  if (count) count.textContent = `${readSet.size} of ${myths.length} explored`;
+}
+
+// boot
+showHero();
+</script>
+</body>
+</html>
